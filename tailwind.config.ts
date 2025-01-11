@@ -11,10 +11,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primarycolor: "#59C3C3",
       },
     },
   },
-  plugins: [
-    require('flowbite/plugin')
-  ],
+  plugins: [require("flowbite/plugin")],
 } satisfies Config;
