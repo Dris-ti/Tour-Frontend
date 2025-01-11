@@ -28,7 +28,6 @@ export default function RootLayout({
       <head>
         <FontAwesoneConfig />
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="./components/customCSS.css" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

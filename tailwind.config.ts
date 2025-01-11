@@ -12,8 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primarycolor: "#59C3C3",
+        sideBar: "#52ADAD",
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("flowbite/plugin"), require("daisyui")],
 } satisfies Config;

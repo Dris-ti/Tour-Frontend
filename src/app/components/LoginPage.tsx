@@ -1,12 +1,7 @@
 'use client'
 
 import React from 'react'
-
-interface InputFieldProps {
-    label: string;
-    type: "email" | "password";
-    id: string;
-}
+import { InputFieldProps } from './types/AllTypes';
 
 export default function LoginPage() {
     const InputField: React.FC<InputFieldProps> = ({ label, type, id }) => {
