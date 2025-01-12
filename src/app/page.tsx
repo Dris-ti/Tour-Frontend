@@ -2,14 +2,14 @@ import React from "react";
 import Login from "./components/Login";
 import LoginPage from "./components/LoginPage";
 import NavBar from "./components/NavBar";
-import { Dashboard } from "./components/Dashboard Items/Dashboard";
+import DashboardLayout from "./dashboard/layout";
 
 export default function Home() {
   return (
     <div>
       {/* <NavBar /> */}
-      {/* < LoginPage /> */}
-      <Dashboard />
+      < LoginPage />
+      {/* <DashboardLayout children={undefined}/> */}
     </div>
   );
 }

@@ -7,9 +7,8 @@ import * as React from 'react';
 export default function SideBar() {
     return (
         <div>
-
-            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center">
-                <div className='mt-16'>
+            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center pt-20">
+                <div>
                     <FontAwesomeIcon icon={faPlane} width={100} color='white' />
                     <p className='text-lg'>Tour Finder</p>
                 </div>

@@ -1,29 +1,39 @@
 'use client'
 
-import React from 'react'
-import { InputFieldProps } from './types/AllTypes';
+import React, { useState } from 'react'
+import { InputField } from './InputField'
+import router from 'next/router';
 
 export default function LoginPage() {
-    const InputField: React.FC<InputFieldProps> = ({ label, type, id }) => {
-        return (
-            <>
-                <label htmlFor={id} className="self-start mt-5 text-xl max-md:ml-2">
-                    {label}:
-                </label>
-                <input
-                    type={type}
-                    id={id}
-                    name={id}
-                    className="flex shrink-0 mt-1.5 rounded-xl bg-teal-300 bg-opacity-10 h-[50px] w-full px-6 max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-teal-300"
-                    aria-label={label}
-                    required
-                />
-            </>
-        );
-    }
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const handleSubmit = (event: React.FormEvent) => {
+
+
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
+        try {
+            const res = await fetch('http://localhost:3000/authentication/login',
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email, password: password }),
+                }
+            )
+            if (res.ok) {
+                // alert("Login sucessful")
+                router.push('app/components/Dashboard Items/Dashboard.tsx')
+
+            }
+            else {
+                alert("Login unsucessful")
+            }
+
+        }
+        catch (e) {
+            return e;
+        }
     }
 
     return (
@@ -41,12 +51,16 @@ export default function LoginPage() {
                         label="Email"
                         type="email"
                         id="email"
+                        value={email}
+                        onChange={(e: any) => setEmail(e.target.value)}
                     />
 
                     <InputField
                         label="Password"
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={(e: any) => setPassword(e.target.value)}
                     />
 
                     <button

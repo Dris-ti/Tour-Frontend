@@ -12,7 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primarycolor: "#59C3C3",
-        sideBar: "#52ADAD",
+        secondarycolor: "#52489C",
       },
     },
   },
