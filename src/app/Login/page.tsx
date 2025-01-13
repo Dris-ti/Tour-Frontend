@@ -1,35 +1,34 @@
 'use client'
 
+import axios from 'axios'
 import React, { useState } from 'react'
 import { InputField } from './InputField'
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-
+    const router = useRouter();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
-            const res = await fetch('http://localhost:3000/authentication/login',
+            const response = await axios.post('http://localhost:3000/authentication/login',
                 {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: email, password: password }),
+                    'email': email,
+                    'password': password
                 }
-            )
-            if (res.ok) {
-                // alert("Login sucessful")
-                router.push('app/components/Dashboard Items/Dashboard.tsx')
 
+            )
+
+            if (response.status === 201) {
+                router.replace('/Dashboard')
             }
             else {
                 alert("Login unsucessful")
             }
-
         }
         catch (e) {
             return e;
@@ -68,6 +67,7 @@ export default function LoginPage() {
                         className="px-14 py-1 mt-10 text-2xl focus:outline-none text-white bg-green-900 rounded-3xl tracking-[2px] hover:bg-teal-400 focus:ring-4 focus:ring-green-300 transition-colors duration-200 max-md:px-4 max-md:mt-8"
                     // style={{ backgroundColor: '#59C3C3' }}
                     >
+                        {/* <Link href={'/Dashboard'}>Login</Link> */}
                         Login
                     </button>
 

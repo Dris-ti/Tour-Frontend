@@ -1,6 +1,6 @@
 'use client'
 
-import { InputFieldProps } from './types/AllTypes';
+import { InputFieldProps } from '../components/types/AllTypes';
 
 export const InputField: React.FC<InputFieldProps> = ({ label, type, id, value, onChange }) => {
     return (

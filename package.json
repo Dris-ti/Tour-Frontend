@@ -17,6 +17,7 @@
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
     "apexcharts": "^4.3.0",
+    "axios": "^1.7.9",
     "flowbite": "^2.5.2",
     "next": "15.1.4",
     "react": "^19.0.0",
