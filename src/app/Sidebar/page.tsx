@@ -34,7 +34,7 @@ export default function SideBar(props: any) {
                     </Link>
                 </li>
                 <li>
-                    <Link href=''>
+                    <Link href='../../Dashboard/Guides'>
                         <FontAwesomeIcon icon={faUser} />
                         Tour Guides
                     </Link>
