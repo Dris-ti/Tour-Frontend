@@ -7,6 +7,7 @@ export default function DashboardPage() {
         <div>
             <ProfitEstimation />
             <MonthlyChart />
+            {/* <h1>I am Dashboard</h1> */}
         </div>
     )
 }

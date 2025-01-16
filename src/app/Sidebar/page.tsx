@@ -1,53 +1,55 @@
 'use client'
 import { faArrowRightFromBracket, faChartLine, faPlane, faSquarePollVertical, faUser, faUserTie, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import * as React from 'react';
 
 
-export default function SideBar() {
+export default function SideBar(props: any) {
     return (
         <div>
-            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center pt-20">
+            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center">
                 <div>
                     <FontAwesomeIcon icon={faPlane} width={100} color='white' />
                     <p className='text-lg'>Tour Finder</p>
                 </div>
                 <div className='h-12'></div>
                 <li>
-                    <a>
+                    <Link href='/Dashboard'>
                         <FontAwesomeIcon icon={faSquarePollVertical} />
                         Overview
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a>
+                    <Link href="../Dashboard/Admins">
                         <FontAwesomeIcon icon={faUserTie} />
                         Admins
-                    </a>
+                    </Link>
+
                 </li>
                 <li>
-                    <a>
+                    <Link href='../../Dashboard/Agencies'>
                         <FontAwesomeIcon icon={faUsers} />
                         Tour Agencies
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a>
+                    <Link href=''>
                         <FontAwesomeIcon icon={faUser} />
                         Tour Guides
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a>
+                    <Link href=''>
                         <FontAwesomeIcon icon={faChartLine} />
                         Generate Reports
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a>
+                    <Link href=''>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />
                         Logout
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>

@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function ProfitEstimation() {
     return (
-        <div className='w-[85vw] relative top-[4vw] p-4'>
+        <div>
             <div className="flex items-center justify-between h-44 w-full md:flex-wrap">
                 <div className="profit card bg-neutral text-neutral-content w-96 m-4" >
                     <div className="card-body items-center text-center">

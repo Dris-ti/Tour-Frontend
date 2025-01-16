@@ -9,31 +9,36 @@ import Link from 'next/link';
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const router = useRouter();
+    const route = useRouter();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/authentication/login',
-                {
-                    'email': email,
-                    'password': password
-                }
-
-            )
+            const response = await axios.post('http://localhost:3000/authentication/login', {
+                email,
+                password,
+            });
 
             if (response.status === 201) {
-                router.replace('/Dashboard')
+                route.replace('/Dashboard');
             }
-            else {
-                alert("Login unsucessful")
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                // Handle server response errors
+                const { status, data } = error.response;
+                if (status === 401) {
+                    alert(data?.error?.message || "Invalid email or password");
+                } else {
+                    alert("An unexpected error occurred. Please try again.");
+                }
+            } else {
+                // Handle unexpected errors
+                console.error("Error:", error);
+                alert("Network or server error. Please try again.");
             }
         }
-        catch (e) {
-            return e;
-        }
-    }
+    };
 
     return (
         <div className="flex overflow-hidden flex-col font-bold text-black bg-white min-h-screen">
@@ -67,7 +72,6 @@ export default function LoginPage() {
                         className="px-14 py-1 mt-10 text-2xl focus:outline-none text-white bg-green-900 rounded-3xl tracking-[2px] hover:bg-teal-400 focus:ring-4 focus:ring-green-300 transition-colors duration-200 max-md:px-4 max-md:mt-8"
                     // style={{ backgroundColor: '#59C3C3' }}
                     >
-                        {/* <Link href={'/Dashboard'}>Login</Link> */}
                         Login
                     </button>
 
