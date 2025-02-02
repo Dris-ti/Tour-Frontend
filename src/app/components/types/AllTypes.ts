@@ -1,9 +1,10 @@
 interface InputFieldProps {
   label: string;
-  type: "email" | "password";
+  type: "email" | "password" | "text" | "date";
   id: string;
   value: string;
   onChange: any;
+  disabled?: boolean;
 }
 
 interface MonthlyData {

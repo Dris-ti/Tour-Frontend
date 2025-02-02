@@ -18,6 +18,8 @@ export default function LoginPage() {
             const response = await axios.post('http://localhost:3000/authentication/login', {
                 email,
                 password,
+            }, {
+                withCredentials: true, // Required to allow cookies
             });
 
             if (response.status === 201) {

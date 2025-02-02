@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 
 
 export default function NavBar(props: any) {
@@ -32,10 +33,10 @@ export default function NavBar(props: any) {
 
                 {/* Profile */}
                 <div className="avatar right-5 p-10">
-                    <div className="ring-primarycolor ring-offset-base-100  rounded-full ring ring-offset-2 w-10 h-10">
+                    <Link className="ring-primarycolor ring-offset-base-100  rounded-full ring ring-offset-2 w-10 h-10" href={'../Dashboard/Profile'}>
                         <p></p>
-                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                    </div>
+                        <img src="imgs/user.png" alt="Cannot show"/>
+                    </Link>
                 </div>
 
             </nav>

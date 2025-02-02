@@ -19,7 +19,7 @@ import Input from '@mui/joy/Input';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const AdminPage = () => {
+const AdminPage = () => {   
     const { data, error } = useSWR(`http://localhost:3000/admin/showAdmins`, fetcher);
     const [open, setOpen] = useState<boolean>(false);
     const [pass, setPass] = useState('');

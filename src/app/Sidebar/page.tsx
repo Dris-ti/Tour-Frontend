@@ -1,11 +1,43 @@
 'use client'
 import { faArrowRightFromBracket, faChartLine, faPlane, faSquarePollVertical, faUser, faUserTie, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 
 export default function SideBar(props: any) {
+    const route = useRouter();
+
+    const logout = async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/authentication/logout', {}, { withCredentials: true });
+
+            if (response.status === 201) {
+                alert('Log outed successfully!');
+                route.replace('/Login')
+            }
+
+        } catch (error) {
+            alert('An unexpected error occurred. Please try again.\n' + error);
+        }
+    }
+
+    const checkValidity = async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/authentication/logout', {}, { withCredentials: true });
+
+            if (response.status != 201) {
+                alert('Login Required!');
+                route.replace('/Login')
+            }
+
+        } catch (error) {
+            alert('An unexpected error occurred. Please try again.\n' + error);
+        }
+    }
+    
     return (
         <div>
             <ul className="menu bg-primarycolor text-white w-56 h-screen text-center">
@@ -46,10 +78,12 @@ export default function SideBar(props: any) {
                     </Link>
                 </li>
                 <li>
-                    <Link href=''>
+                    <button
+                    onClick={logout}
+                    >
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />
                         Logout
-                    </Link>
+                    </button>
                 </li>
             </ul>
         </div>
