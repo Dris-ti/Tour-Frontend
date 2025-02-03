@@ -37,7 +37,7 @@ export default function SideBar(props: any) {
             alert('An unexpected error occurred. Please try again.\n' + error);
         }
     }
-    
+
     return (
         <div>
             <ul className="menu bg-primarycolor text-white w-56 h-screen text-center">
@@ -47,7 +47,7 @@ export default function SideBar(props: any) {
                 </div>
                 <div className='h-12'></div>
                 <li>
-                    <Link href='/Dashboard'>
+                    <Link href='../Dashboard/Overview'>
                         <FontAwesomeIcon icon={faSquarePollVertical} />
                         Overview
                     </Link>
@@ -72,14 +72,14 @@ export default function SideBar(props: any) {
                     </Link>
                 </li>
                 <li>
-                    <Link href=''>
+                    <Link href='../../Dashboard/Reports'>
                         <FontAwesomeIcon icon={faChartLine} />
                         Generate Reports
                     </Link>
                 </li>
                 <li>
                     <button
-                    onClick={logout}
+                        onClick={logout}
                     >
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />
                         Logout

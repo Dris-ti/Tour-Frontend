@@ -2,7 +2,18 @@
 import axios from 'axios';
 import { InputField } from './InputField';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+
+import '@fontsource/inter';
+import Button from '@mui/joy/Button';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Modal from '@mui/joy/Modal';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
+import Stack from '@mui/joy/Stack';
+import Input from '@mui/joy/Input';
 
 export default function Profile() {
   const [nid, setNID] = useState("");
@@ -14,6 +25,16 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false); // Controls edit mode
 
   const route = useRouter();
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [old, setOld] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [cnPass, setCNPass] = useState('');
+
+  const [oldpassErr, setOldPassErr] = useState<string | null>(null);
+  const [newpassErr, setNewPassErr] = useState<string | null>(null);
+
+
 
   useEffect(() => {
     const getData = async () => {
@@ -56,6 +77,44 @@ export default function Profile() {
     }
   };
 
+  const generatePassword = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    let password = '';
+    const str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+    for (let i = 1; i <= 8; i++) {
+      const char = Math.floor(Math.random() * str.length);
+      password += str.charAt(char);
+    }
+    setNewPass(password);
+    setCNPass(password);
+  };
+
+  const changePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (newPass !== cnPass) {
+      setNewPassErr("New password and confirm password do not match.");
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3000/authentication/changePassword', {
+        oldPassword: old,
+        newPassword: newPass,
+      }, { withCredentials: true });
+
+      if (response.status === 201) {
+        alert("Password changed successfully!");
+        setOpen(false);
+        setOld('');
+        setNewPass('');
+        setCNPass('');
+      }
+    } catch (error) {
+      alert("Failed to change password. Please try again.");
+    }
+  };
+
   return (
     <div className='flex flex-col'>
       <div className='flex items-center'>
@@ -73,20 +132,21 @@ export default function Profile() {
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center items-center px-10 pt-8 pb-16 mb-0 bg-white rounded-[25px] shadow-[0px_0px_10px_rgba(89,195,195,1)] w-[70vw] max-md:w-full max-md:px-4 space-x-4">
             <div>
-              <InputField label="Name" type="text" id="Name" value={name} onChange={(e) => setName(e.target.value)} disabled={!isEditing} />
-              <InputField label="Phone No" type="text" id="Phone_no" value={phone_no} onChange={(e) => setPhone_no(e.target.value)} disabled={!isEditing} />
-              <InputField label="NID" type="text" id="nid_no" value={nid} onChange={(e) => setNID(e.target.value)} disabled={!isEditing} />
+              <InputField label="Name" type="text" id="Name" value={name} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)} disabled={!isEditing} />
+              <InputField label="Phone No" type="text" id="Phone_no" value={phone_no} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone_no(e.target.value)} disabled={!isEditing} />
+              <InputField label="NID" type="text" id="nid_no" value={nid} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setNID(e.target.value)} disabled={!isEditing} />
             </div>
 
             <div>
-              <InputField label="Date of Birth" type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)} disabled={!isEditing} />
-              <InputField label="Gender" type="text" id="gender" value={gender} onChange={(e) => setGender(e.target.value)} disabled={!isEditing} />
-              <InputField label="Address" type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} disabled={!isEditing} />
+              <InputField label="Date of Birth" type="date" id="date" value={date} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDate(e.target.value)} disabled={!isEditing} />
+              <InputField label="Gender" type="text" id="gender" value={gender} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setGender(e.target.value)} disabled={!isEditing} />
+              <InputField label="Address" type="text" id="address" value={address} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setAddress(e.target.value)} disabled={!isEditing} />
             </div>
           </div>
 
           <div>
-            <button type="button" className="px-14 py-1 mt-10 text-2xl focus:outline-none text-white bg-green-900 rounded-3xl tracking-[2px] hover:bg-teal-400 transition-colors duration-200">
+            <button type="button" className="px-14 py-1 mt-10 text-2xl focus:outline-none text-white bg-green-900 rounded-3xl tracking-[2px] hover:bg-teal-400 transition-colors duration-200"
+              onClick={() => setOpen(true)}>
               Change Password
             </button>
 
@@ -110,6 +170,69 @@ export default function Profile() {
           </div>
         </form>
       </div>
+
+
+
+
+
+      <Modal open={open} onClose={() => {
+        setOpen(false);
+        setOld('');
+        setNewPass('');
+        setCNPass('');
+      }}>
+        <ModalDialog>
+          <DialogTitle>Change Password</DialogTitle>
+          <form onSubmit={changePassword}>
+            <Stack spacing={2}>
+              <FormControl>
+                <FormLabel>Old Password</FormLabel>
+                <Input
+                  autoFocus
+                  required
+                  value={old}
+                  type='password'
+                  onChange={(e) => setOld(e.target.value)}
+                />
+                {oldpassErr && <small className="text-red-500">{oldpassErr}</small>}
+
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>New Password</FormLabel>
+                <Input
+                  required
+                  value={newPass}
+                  type='text'
+                  onChange={(e) => setNewPass(e.target.value)}
+                />
+                <a
+                  onClick={(e) => generatePassword(e)}
+                  className="w-fit text-xs absolute right-0 pt-1 pr-1 hover:text-primarycolor"
+                  href="#"
+                >
+                  Generate Password
+                </a>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  autoFocus
+                  required
+                  value={cnPass}
+                  type='text'
+                  onChange={(e) => setCNPass(e.target.value)}
+                />
+                {newpassErr && <small className="text-red-500">{newpassErr}</small>}
+              </FormControl>
+
+              <Button type="submit">Save</Button>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
+
     </div>
   );
 }
