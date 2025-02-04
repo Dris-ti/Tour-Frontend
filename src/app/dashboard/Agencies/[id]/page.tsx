@@ -1,4 +1,5 @@
 'use client';
+import axios from 'axios';
 import { useRouter, useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -14,18 +15,18 @@ const AgencyInfoPage = () => {
     }
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-    const router = useRouter();
     const { id } = useParams();
 
     useEffect(() => {
         async function getUserById(id: string) {
             try {
-                const response = await fetch(`http://localhost:3000/admin/showAgencyInfoById/${id}`);
-                if (!response.ok) {
+                const response = await axios.get(`http://localhost:3000/admin/showAgencyInfoById/${id}`, { withCredentials: true });
+
+                if (response.status !== 201) {
                     throw new Error('Failed to fetch agency information');
                 }
-                const data = await response.json();
-                setUserInfo(data);
+
+                setUserInfo(response.data);
             } catch (error) {
                 console.error('Error fetching agency information:', error);
             }

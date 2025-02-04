@@ -37,7 +37,7 @@ export default function LoginPage() {
             } else {
                 // Handle unexpected errors
                 console.error("Error:", error);
-                alert("Network or server error. Please try again.");
+                alert("Network or server error. Please try again." + error);
             }
         }
     };
@@ -77,13 +77,8 @@ export default function LoginPage() {
                         Login
                     </button>
 
-                    <button
-                        type="button"
-                        className="self-center mt-5 text-md font-thin hover:text-teal-500 transition-colors duration-200"
-                        onClick={() => { }}
-                    >
-                        Forget Password?
-                    </button>
+                    <Link className="self-center mt-5 text-md font-thin hover:text-teal-500 transition-colors duration-200" href={'../ResetPassword'}>Forget Password</Link>
+
                 </form>
             </div>
         </div>

@@ -1,14 +1,16 @@
-import React from 'react'
-import ProfitEstimation from './ProfitEstimation'
-import MonthlyChart from './MonthlyChart'
+'use client'
+
+import React, { useEffect } from 'react'
 import Overview from './Overview/page'
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import ValidityCheck from '../ValidityCheck/page'
 
 export default function DashboardPage() {
+    // <ValidityCheck />
+
     return (
         <div>
-            {/* <ProfitEstimation />
-            <MonthlyChart /> */}
-            {/* <h1>I am Dashboard</h1> */}
             <Overview />
         </div>
     )

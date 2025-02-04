@@ -1,6 +1,5 @@
 'use client'
 import axios from 'axios';
-import { get } from 'http';
 import React, { use, useEffect, useState } from 'react'
 import {
     Chart as ChartJS,
@@ -13,6 +12,7 @@ import {
     ArcElement
 } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
+import { useRouter } from 'next/navigation';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -27,22 +27,23 @@ export default function Overview() {
     useEffect(() => {
         async function getMonthyData(year: string) {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/admin-dashboard/allMonthlyTransactionByYear/${year}`
+                const response = await axios.get(
+                    `http://localhost:3000/admin-dashboard/allMonthlyTransactionByYear/${year}`,
+                    { withCredentials: true }
                 );
-                if (!response.ok) {
+
+                if (response.status !== 201) {
                     throw new Error("Failed to fetch Monthy information");
                 }
-                const data = await response.json();
-                console.log(year);
-                setmonthlyData(data);
+
+                setmonthlyData(response.data);
             } catch (error) {
                 console.error("Error fetching Monthly information:", error);
             }
         }
 
         getMonthyData(year.toString()); // Convert year to string
-    }, [year]);
+    }, []);
 
 
     useEffect(() => {
@@ -69,16 +70,18 @@ export default function Overview() {
     useEffect(() => {
         async function getUsers() {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/admin-dashboard/userCount`
+                const response = await axios.get(
+                    'http://localhost:3000/admin-dashboard/userCount',
+                    { withCredentials: true }
                 );
-                if (!response.ok) {
-                    throw new Error("Failed to fetch User information");
+
+                if (response.status !== 200) {
+                    alert(`Overview 1 ${response.status}: ${response.statusText}`);
+                    throw new Error("Failed to fetch User Count information");
                 }
-                const data = await response.json();
-                setUsers(Array.isArray(data) ? data : [data]); // Convert to array if needed
-                console.log(data);
-                console.log(users);
+
+                setUsers(response.data); // Convert to array if needed
+
             } catch (error) {
                 console.error("Error fetching User information:", error);
             }
@@ -98,7 +101,7 @@ export default function Overview() {
 
     return (
         <div>
-            <div className='w-[82vw] h-[85vh]'>
+            <div className='w-[82vw] h-[85vh] overflow-hidden z-0 absolute top-16 ml-6'>
 
                 <div className='w-[82vw] h-[40%] flex justify-between items-center'>
                     {/* Profit */}
@@ -171,7 +174,7 @@ export default function Overview() {
                                         datasets: [
                                             {
                                                 label: 'User Count',
-                                                data: [users[0].Users, users[0].Agencies, users[0].Guides], // Access properties from object
+                                                data: [users.Users, users.Agencies, users.Guides], // Access properties from object
                                                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                                                 borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                                                 borderWidth: 1,

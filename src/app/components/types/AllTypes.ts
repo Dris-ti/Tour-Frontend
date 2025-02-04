@@ -1,8 +1,8 @@
 interface InputFieldProps {
   label: string;
-  type: "email" | "password" | "text" | "date";
+  type: "email" | "password" | "text" | "date" | "file";
   id: string;
-  value: string;
+  value?: string;
   onChange: any;
   disabled?: boolean;
 }

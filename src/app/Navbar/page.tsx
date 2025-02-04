@@ -18,7 +18,7 @@ export default function NavBar(props: any) {
                     withCredentials: true, // Required to allow cookies
                 });
 
-                if (response.status === 200) {
+                if (response.status === 201) {
 
                     setPname(JSON.stringify(response.data.name));
 
@@ -36,7 +36,7 @@ export default function NavBar(props: any) {
 
     return (
         <div>
-            <nav className="bg-primarycolor border-gray-200 dark:bg-gray-900  w-full h-16 flex items-center justify-center">
+            <nav className="bg-primarycolor border-gray-200 dark:bg-gray-900  w-full h-16 flex items-center justify-center fixed top-0 overflow-hidden z-10">
                 {/* Page name */}
                 <nav className="bg-transparent dark:bg-gray-700 w-[95vw]">
                     <div className="max-w-screen-xl mx-auto">

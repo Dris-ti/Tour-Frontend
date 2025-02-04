@@ -40,7 +40,7 @@ export default function SideBar(props: any) {
 
     return (
         <div>
-            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center">
+            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center sticky top-0">
                 <div>
                     <FontAwesomeIcon icon={faPlane} width={100} color='white' />
                     <p className='text-lg'>Tour Finder</p>
@@ -77,6 +77,14 @@ export default function SideBar(props: any) {
                         Generate Reports
                     </Link>
                 </li>
+
+                <li>
+                    <Link href='../../Dashboard/ActivityLog'>
+                        <FontAwesomeIcon icon={faChartLine} />
+                        Activity Log
+                    </Link>
+                </li>
+
                 <li>
                     <button
                         onClick={logout}
