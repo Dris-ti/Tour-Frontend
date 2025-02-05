@@ -21,10 +21,11 @@ import ValidityCheck from '../../ValidityCheck/page'
 
 const AdminPage = () => {
     // <ValidityCheck />
-    const [admins, setAdmins] = useState([]);    
+    const [admins, setAdmins] = useState([]);
     const [open, setOpen] = useState<boolean>(false);
     const [pass, setPass] = useState('');
     const [email, setEmail] = useState('');
+    const route = useRouter();
 
     useEffect(() => {
         const fetchAdmins = async () => {
@@ -36,9 +37,16 @@ const AdminPage = () => {
                 if (response.status === 201) {
                     setAdmins(response.data);
                 } else {
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        route.replace('/Login');
+                    }
                     alert('Network or server error. Please try again. ');
                 }
             } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    route.replace('/Login');
+                }
                 alert('Network or server error. Please try again. ' + error);
             }
         };
@@ -60,13 +68,20 @@ const AdminPage = () => {
                 copyToClipboard({ email, pass }); // Copy the generated password to the clipboard
                 setOpen(false);
             }
+            else {
+                if (response.status === 401) {
+                    alert(response.statusText);
+                    route.replace('/Login');
+                }
+                alert('Network or server error. Please try again. ');
+            }
             setEmail('')
             setPass('')
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 const { status, data } = error.response;
-                if (status === 401) {
-                    alert(data?.error?.message || 'Email already exits');
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    route.replace('/Login');
                 } else {
                     alert('An unexpected error occurred. Please try again.');
                 }
@@ -78,7 +93,7 @@ const AdminPage = () => {
     };
 
 
-  
+
 
 
     const copyToClipboard = (data: any) => {
@@ -107,7 +122,7 @@ const AdminPage = () => {
         setPass(password);
     };
 
-    
+
 
     return (
         <div>
@@ -132,10 +147,10 @@ const AdminPage = () => {
                                     key={user.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                 >
-                                    <td className="px-6 py-2">{user.id}</td>
-                                    <td className="px-6 py-2">{user.name}</td>
-                                    <td className="px-6 py-2">{user.email}</td>
-                                    <td className="px-6 py-2">{user.status}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.id}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.name}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.email}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.status}</td>
                                 </tr>
                             ))}
                         </tbody>

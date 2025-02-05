@@ -20,9 +20,16 @@ const GuidePage = () => {
                 setStatus(status); // Refresh data
             }
             else {
-                alert("Error")
+                if (response.status === 401) {
+                    alert(response.statusText);
+                    router.replace('/Login');
+                }
+                alert('Failed to approve Guide.');
             }
         } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                router.replace('/Login');
+            }
             alert(error)
         }
     };
@@ -35,7 +42,17 @@ const GuidePage = () => {
                 alert("Guide rejected.");
                 setStatus(status); // Refresh data
             }
+            else {
+                if (response.status === 401) {
+                    alert(response.statusText);
+                    router.replace('/Login');
+                }
+                alert('Failed to reject Guide.');
+            }
         } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                router.replace('/Login');
+            }
             alert(error)
         }
     };
@@ -51,9 +68,16 @@ const GuidePage = () => {
                     setGuides(response.data);
                     console.log(response.data)
                 } else {
-                    alert('Network or server error. Please try again. ');
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        router.replace('/Login');
+                    }
+                    alert('Failed to fetch Guide information');
                 }
             } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    router.replace('/Login');
+                }
                 alert('Network or server error. Please try again. ' + error);
             }
         };
@@ -61,7 +85,7 @@ const GuidePage = () => {
         fetchGuides();
     }, [status]);
 
-    
+
 
     const handleRowClick = (id: string) => {
         router.push(`/Dashboard/Guides/${id}`);
@@ -121,11 +145,11 @@ const GuidePage = () => {
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                     onClick={() => handleRowClick(user.id)}
                                 >
-                                    <td className="px-6 py-2">{user.id}</td>
-                                    <td className="px-6 py-2">{user.name}</td>
-                                    <td className="px-6 py-2">{user.email}</td>
-                                    <td className="px-6 py-2">{user.status}</td>
-                                    <td className="px-6 py-2 text-center">
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.id}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.name}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.email}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.status}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2 text-center">
                                         {status !== 'Active' && (
                                             <button
                                                 className="w-10 h-8 rounded-full bg-red-500 text-white m-1"

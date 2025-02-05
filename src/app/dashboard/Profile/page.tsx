@@ -18,15 +18,16 @@ import { profile } from 'console';
 import { Akatab } from 'next/font/google';
 
 export default function Profile() {
-  const [bio, setBio] = useState("");
-  const [nid, setNID] = useState("");
+  const [bio, setBio] = useState<string>("");
+  const [nid, setNID] = useState<string>("");
   const [nidPicFile, setNidPicFile] = useState<File | null>(null);
-  const [name, setName] = useState("");
-  const [phone_no, setPhone_no] = useState("");
-  const [dobDate, setDate] = useState("");
-  const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const [name, setName] = useState<string>("");
+  const [phone_no, setPhone_no] = useState<string>("");
+  const [dobDate, setDate] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [profilePic, setProfilePic] = useState<string>("");
+
   const [isEditing, setIsEditing] = useState(false); // Controls edit mode
 
   const [open, setOpen] = useState<boolean>(false);
@@ -36,6 +37,7 @@ export default function Profile() {
 
   const [oldpassErr, setOldPassErr] = useState<string | null>(null);
   const [newpassErr, setNewPassErr] = useState<string | null>(null);
+  const route = useRouter();
 
   useEffect(() => {
     const getData = async () => {
@@ -51,7 +53,17 @@ export default function Profile() {
           setBio(response.data.bio);
           setNidPicFile(response.data.nid_pic_path);
         }
+        else {
+          if (response.status === 401) {
+            alert(response.statusText);
+            route.replace('/Login');
+          }
+          alert('Failed to fetch Admin information');
+        }
       } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          route.replace('/Login');
+        }
         alert("Failed to fetch profile data. Please try again.");
       }
     };
@@ -79,7 +91,17 @@ export default function Profile() {
         alert("Profile updated successfully!");
         setIsEditing(false); // Disable editing mode after saving
       }
+      else {
+        if (response.status === 401) {
+          alert(response.statusText);
+          route.replace('/Login');
+        }
+        alert('Failed to edit admin information');
+      }
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        route.replace('/Login');
+      }
       alert("Failed to update profile. Please try again." + error);
     }
   };
@@ -117,7 +139,17 @@ export default function Profile() {
         setNewPass('');
         setCNPass('');
       }
+      else {
+        if (response.status === 401) {
+          alert(response.statusText);
+          route.replace('/Login');
+        }
+        alert('Failed to change admin password');
+      }
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        route.replace('/Login');
+      }
       alert("Failed to change password. Please try again.");
     }
   };
@@ -142,14 +174,27 @@ export default function Profile() {
               <div>
                 <InputField label="Name" type="text" id="Name" value={name} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)} disabled={!isEditing} />
                 <InputField label="Bio" type="text" id="bio" value={bio} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setBio(e.target.value)} disabled={!isEditing} />
-                <InputField label="Phone No" type="text" id="Phone_no" value={phone_no} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone_no(e.target.value)} disabled={!isEditing} />
+                <InputField
+                  label="Phone No"
+                  type="text"
+                  id="Phone_no"
+                  value={phone_no ?? ""}
+                  onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone_no(e.target.value)}
+                  disabled={!isEditing}
+                />
                 <InputField label="Date of Birth" type="date" id="date" value={dobDate} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDate(e.target.value)} disabled={!isEditing} />
 
               </div>
 
               <div>
                 <InputField label="NID" type="text" id="nid_no" value={nid} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setNID(e.target.value)} disabled={!isEditing} />
-                <InputField label="NID Picture" type="file" id="nid_pic_path" onChange={(e: { target: { files: any[]; }; }) => setNidPicFile(e.target.files?.[0] || null)} disabled={!isEditing} />
+                <InputField
+                  label="NID Picture"
+                  type="file"
+                  id="nid_pic_path"
+                  onChange={(e: { target: { files: any[]; }; }) => setNidPicFile(e.target.files?.[0] || null)}
+                  disabled={!isEditing}
+                />
                 <InputField label="Gender" type="text" id="gender" value={gender} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setGender(e.target.value)} disabled={!isEditing} />
                 <InputField label="Address" type="text" id="address" value={address} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setAddress(e.target.value)} disabled={!isEditing} />
               </div>

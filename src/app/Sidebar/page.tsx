@@ -40,7 +40,7 @@ export default function SideBar(props: any) {
 
     return (
         <div>
-            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center sticky top-0">
+            <ul className="menu bg-primarycolor text-white w-56 h-screen text-center sticky top-0 ">
                 <div>
                     <FontAwesomeIcon icon={faPlane} width={100} color='white' />
                     <p className='text-lg'>Tour Finder</p>

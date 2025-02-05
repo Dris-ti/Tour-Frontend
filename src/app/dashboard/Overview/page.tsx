@@ -23,6 +23,12 @@ export default function Overview() {
     const [monthlyData, setmonthlyData] = useState<any[]>([]);
     const [users, setUsers] = useState<any>(null); // Allow objects
     const year = new Date().getFullYear();
+    const route = useRouter();
+    const [isMountedMonthly, setIsMountedMonthly] = useState(false); // Prevent hydration issue
+    useEffect(() => {
+        setIsMountedMonthly(true); //  Ensures it only runs on the client
+    }, []);
+
 
     useEffect(() => {
         async function getMonthyData(year: string) {
@@ -32,18 +38,27 @@ export default function Overview() {
                     { withCredentials: true }
                 );
 
-                if (response.status !== 201) {
-                    throw new Error("Failed to fetch Monthy information");
+                if (response.status === 201) {
+                    setmonthlyData(response.data);
+                }
+                else {
+                    if (response.status === 401) {
+                        alert("From monthy Data: " + response.statusText);
+                        route.replace('/Login');
+                    }
+                    alert('Failed to fetch monthly information');
                 }
 
-                setmonthlyData(response.data);
             } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    route.replace('/Login');
+                }
                 console.error("Error fetching Monthly information:", error);
             }
         }
 
         getMonthyData(year.toString()); // Convert year to string
-    }, []);
+    }, [isMountedMonthly]);
 
 
     useEffect(() => {
@@ -58,6 +73,13 @@ export default function Overview() {
                     setProfit(response.data.Profit);
                     setpPercentage(response.data.ProfitPercentage);
                     setEstimation(response.data.Prediction);
+                }
+                else {
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        route.replace('/Login');
+                    }
+                    alert('Failed to fetch profit information');
                 }
             } catch (error) {
                 console.error('An unexpected error occurred:', error);
@@ -75,12 +97,17 @@ export default function Overview() {
                     { withCredentials: true }
                 );
 
-                if (response.status !== 200) {
-                    alert(`Overview 1 ${response.status}: ${response.statusText}`);
-                    throw new Error("Failed to fetch User Count information");
+                if (response.status === 200) {
+                    setUsers(response.data); // Convert to array if needed
+                }
+                else {
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        route.replace('/Login');
+                    }
+                    alert('Failed to fetch user count information' + response.status);
                 }
 
-                setUsers(response.data); // Convert to array if needed
 
             } catch (error) {
                 console.error("Error fetching User information:", error);

@@ -20,18 +20,29 @@ const GuideInfoPage = () => {
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const { id } = useParams();
+    const route = useRouter();
 
     useEffect(() => {
         async function getUserById(id: string) {
             try {
                 const response = await axios.get(`http://localhost:3000/admin/showGuideInfoById/${id}`, { withCredentials: true });
 
-                if (response.status !== 201) {
-                    throw new Error('Failed to fetch guide information');
+                if (response.status === 201) {
+                    setUserInfo(response.data);
+                }
+                else {
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        route.replace('/Login');
+                    }
+                    alert('Failed to fetch Guide information');
                 }
 
-                setUserInfo(response.data);
+
             } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    route.replace('/Login');
+                }
                 console.error('Error fetching guide information:', error);
             }
         }
@@ -50,35 +61,35 @@ const GuideInfoPage = () => {
                         <tbody>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Name:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.name}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.name}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Email:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.email}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.email}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Phone No:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.phone_no}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.phone_no}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Location:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.address}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.address}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Description:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.description}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.description}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Status:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.status}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.status}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Date of Birth:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.dob.toString()}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.dob.toString()}</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Gender:</td>
-                                <td className="border border-gray-300 px-4 py-2">{userInfo.gender}</td>
+                                <td suppressHydrationWarning className="border border-gray-300 px-4 py-2">{userInfo.gender}</td>
                             </tr>
                         </tbody>
                     </table>

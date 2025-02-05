@@ -17,15 +17,21 @@ const AgencyPage = () => {
 
     const approve = async (id: string) => {
         try {
-            const response = await axios.patch(`http://localhost:3000/admin/acceptTourAgency/${id}`,{}, { withCredentials: true });
+            const response = await axios.patch(`http://localhost:3000/admin/acceptTourAgency/${id}`, {}, { withCredentials: true });
             if (response.status === 201) {
                 alert("Agency approved");
                 mutate(`http://localhost:3000/admin/showTourAgencies/${status}`); // Refresh data
             }
+            else {
+                if (response.status === 401) {
+                    alert(response.statusText);
+                    router.replace('/Login');
+                }
+                alert('Network or server error. Please try again. ');
+            }
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                const { data } = error.response;
-                alert(data?.error?.message || "Agency approval failed!");
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                router.replace('/Login');
             } else {
                 console.error("Error:", error);
                 alert("Network or server error. Please try again.");
@@ -40,10 +46,16 @@ const AgencyPage = () => {
                 alert("Agency rejected.");
                 mutate('http://localhost:3000/admin/showTourAgencies/' + status); // Refresh data
             }
+            else {
+                if (response.status === 401) {
+                    alert(response.statusText);
+                    router.replace('/Login');
+                }
+                alert('Network or server error. Please try again. ');
+            }
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                const { data } = error.response;
-                alert(data?.error?.message || "Agency rejection failed!");
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                router.replace('/Login');
             } else {
                 console.error("Error:", error);
                 alert("Network or server error. Please try again.");
@@ -61,9 +73,16 @@ const AgencyPage = () => {
                 if (response.status === 201) {
                     setAgencies(response.data);
                 } else {
+                    if (response.status === 401) {
+                        alert(response.statusText);
+                        router.replace('/Login');
+                    }
                     alert('Network or server error. Please try again. ');
                 }
             } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    router.replace('/Login');
+                }
                 alert('Network or server error. Please try again. ' + error);
             }
         };
@@ -130,11 +149,11 @@ const AgencyPage = () => {
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                     onClick={() => handleRowClick(user.id)}
                                 >
-                                    <td className="px-6 py-2">{user.id}</td>
-                                    <td className="px-6 py-2">{user.name}</td>
-                                    <td className="px-6 py-2">{user.email}</td>
-                                    <td className="px-6 py-2">{user.status}</td>
-                                    <td className="px-6 py-2 text-center">
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.id}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.name}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.email}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2">{user.status}</td>
+                                    <td suppressHydrationWarning className="px-6 py-2 text-center">
                                         {status !== 'Active' && (
                                             <button
                                                 className="w-10 h-8 rounded-full bg-red-500 text-white m-1"
