@@ -15,7 +15,7 @@ export default function LoginPage() {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/authentication/login', {
+            const response = await axios.post('https://tour-backend-e75o.onrender.com/authentication/login', {
                 email,
                 password,
             }, {

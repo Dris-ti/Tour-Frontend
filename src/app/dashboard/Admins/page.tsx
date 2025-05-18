@@ -56,7 +56,7 @@ const AdminPage = () => {
 
 
     const addAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        // event.preventDefault();
 
         try {
             const response = await axios.post('http://localhost:3000/admin/addAdmin', { email },
