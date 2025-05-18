@@ -1,6 +1,5 @@
 'use client'
 
-import axios from 'axios'
 import React, { useState, Suspense } from 'react'
 import { InputField } from '../Login/InputField'
 import { useRouter } from 'next/navigation'

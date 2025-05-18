@@ -1,13 +1,13 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import axios from "axios";
-import { useEffect } from "react";
 
 interface Props {
   password: string;
   cnpassword: string;
-  router: any;
+  router: AppRouterInstance;
 }
 
 const SearchParamHandler = ({ password, cnpassword, router }: Props) => {
