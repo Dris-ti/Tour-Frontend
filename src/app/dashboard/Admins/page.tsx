@@ -197,8 +197,7 @@ const AdminPage = () => {
                                         onChange={(e) => setPass(e.target.value)}
                                     />
                                     <a
-                                        onClick={(e) => {
-                                            e.preventDefault();
+                                        onClick={() => {
                                             generatePassword();
                                         }}
                                         className="w-fit text-xs absolute right-0 pt-1 pr-1 hover:text-primarycolor"
