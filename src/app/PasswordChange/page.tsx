@@ -1,46 +1,15 @@
 'use client'
 
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import { InputField } from '../Login/InputField'
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+import SearchParamHandler from './SearchParamHandler'
 
 export default function LoginPage() {
     const [cnpassword, setCNPassword] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
-    const searchParams = useSearchParams();
-
-    const changePassword = async () => {
-        if (password !== cnpassword) {
-            alert("Passwords do not match.");
-            return;
-        }
-
-        const token = searchParams.get('token');
-
-        if (!token) {
-            alert("Token is missing.");
-            return;
-        }
-
-        try {
-            console.log("TOKEN: " + token)
-            console.log("PASS: " + password);
-
-            const response = await axios.post(`http://localhost:3000/authentication/forgetPassword`,
-                { token, newPassword: password },
-                { withCredentials: true });
-
-            if (response.status === 201) {
-                alert("Password changed successfully.");
-                router.push('../Login');
-            }
-        } catch (error) {
-            alert(`Error occurred: ${error}`)
-        }
-
-    }
 
     return (
         <div className="flex overflow-hidden flex-col font-bold text-black bg-white min-h-screen">
@@ -48,7 +17,7 @@ export default function LoginPage() {
                 <form
                     onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                         e.preventDefault();
-                        changePassword();
+                        // submission handled inside Suspense wrapper
                     }}
                     className="flex flex-col px-10 pt-8 pb-16 mb-0 bg-white rounded-[25px] shadow-[0px_0px_10px_rgba(89,195,195,1)] w-[500px] max-md:w-full max-md:px-4"
                 >
@@ -72,12 +41,13 @@ export default function LoginPage() {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCNPassword(e.target.value)}
                     />
 
-                    <button
-                        type="submit"
-                        className="px-14 py-1 mt-10 text-2xl focus:outline-none text-white bg-green-900 rounded-3xl tracking-[2px] hover:bg-teal-400 focus:ring-4 focus:ring-green-300 transition-colors duration-200 max-md:px-4 max-md:mt-8"
-                    >
-                        Save
-                    </button>
+                    <Suspense fallback={<p>Loading token...</p>}>
+                        <SearchParamHandler
+                            password={password}
+                            cnpassword={cnpassword}
+                            router={router}
+                        />
+                    </Suspense>
                 </form>
             </div>
         </div>
