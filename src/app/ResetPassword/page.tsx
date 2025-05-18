@@ -9,7 +9,7 @@ export default function LoginPage() {
 
     const sendMail = async () => {
         try {
-            const response = await axios.post(`http://localhost:3000/authentication/requestChangePassword/${email}`, {},
+            const response = await axios.post(`https://tour-backend-e75o.onrender.com/authentication/requestChangePassword/${email}`, {},
                 { withCredentials: true });
 
             if (response.status === 201) {
@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     const checkEmailValidity = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/authentication/GetAccountInfo", { withCredentials: true });
+            const response = await axios.get("https://tour-backend-e75o.onrender.com/authentication/GetAccountInfo", { withCredentials: true });
             if (response.status === 201) {
                 sendMail();
             } else {

@@ -12,7 +12,7 @@ export default function SideBar() {
 
     const logout = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/authentication/logout', {}, { withCredentials: true });
+            const response = await axios.post('https://tour-backend-e75o.onrender.com/authentication/logout', {}, { withCredentials: true });
 
             if (response.status === 201) {
                 alert('Logged out successfully!');

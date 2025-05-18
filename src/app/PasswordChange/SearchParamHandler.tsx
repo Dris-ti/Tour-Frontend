@@ -28,7 +28,7 @@ const SearchParamHandler = ({ password, cnpassword, router }: Props) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/authentication/forgetPassword`,
+        `https://tour-backend-e75o.onrender.com/authentication/forgetPassword`,
         { token, newPassword: password },
         { withCredentials: true }
       );

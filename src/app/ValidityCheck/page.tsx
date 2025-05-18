@@ -9,7 +9,7 @@ export default function Page() {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/authentication/verifyToken', {
+                const response = await axios.get('https://tour-backend-e75o.onrender.com/authentication/verifyToken', {
                     withCredentials: true,
                 });
 

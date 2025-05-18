@@ -10,7 +10,7 @@ export default function NavBar() {
     useEffect(() => {
         const getProfile = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/admin/showAdminProfile', {
+                const response = await axios.get('https://tour-backend-e75o.onrender.com/admin/showAdminProfile', {
                     withCredentials: true,
                 });
 
