@@ -42,10 +42,6 @@ export default function Page() {
 
     }, [year]);
 
-    const handleRowClick = (year: string) => {
-
-    }
-
     const getMonthName = (monthNumber: number): string => {
         const months = [
             "January", "February", "March", "April", "May", "June",
@@ -78,9 +74,7 @@ export default function Page() {
                                 <tr
                                     key={item.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
-                                    onClick={() => {
-                                        handleRowClick(item.year);
-                                    }}
+
                                 >
                                     <td className="px-6 py-2">{getMonthName(item.month)}</td>
                                     <td className="px-6 py-2">{item.total_transaction}</td>

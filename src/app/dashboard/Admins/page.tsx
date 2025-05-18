@@ -17,11 +17,16 @@ import DialogTitle from '@mui/joy/DialogTitle';
 import Stack from '@mui/joy/Stack';
 import Input from '@mui/joy/Input';
 
-
+interface Admin {
+    id: string;
+    name: string;
+    email: string;
+    status: string;
+}
 
 const AdminPage = () => {
     // <ValidityCheck />
-    const [admins, setAdmins] = useState([]);
+    const [admins, setAdmins] = useState<Admin[]>([]);
     const [open, setOpen] = useState<boolean>(false);
     const [pass, setPass] = useState('');
     const [email, setEmail] = useState('');
@@ -55,7 +60,7 @@ const AdminPage = () => {
     }, [open, route]);
 
 
-    const addAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
+    const addAdmin = async () => {
         // event.preventDefault();
 
         try {
@@ -95,7 +100,7 @@ const AdminPage = () => {
 
 
 
-    const copyToClipboard = (data: any) => {
+    const copyToClipboard = (data: { email: string; pass: string }) => {
         const { email, pass } = data
         if (navigator.clipboard) {
             try {
@@ -109,8 +114,7 @@ const AdminPage = () => {
         }
     };
 
-    const generatePassword = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        e.preventDefault();
+    const generatePassword = () => {
         let password = '';
         const str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$';
 
@@ -141,7 +145,7 @@ const AdminPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {admins.map((user: any) => (
+                            {admins.map((user: Admin) => (
                                 <tr
                                     key={user.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
@@ -193,7 +197,10 @@ const AdminPage = () => {
                                         onChange={(e) => setPass(e.target.value)}
                                     />
                                     <a
-                                        onClick={(e) => generatePassword(e)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            generatePassword();
+                                        }}
                                         className="w-fit text-xs absolute right-0 pt-1 pr-1 hover:text-primarycolor"
                                         href="#"
                                     >

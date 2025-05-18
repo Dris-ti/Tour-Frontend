@@ -7,11 +7,15 @@ import React, { useEffect, useState } from 'react';
 import '@fontsource/inter';
 import { useRouter } from 'next/navigation';
 
-
+interface LogItem {
+    id: string;
+    url: string;
+    createdAt: string;
+}
 
 
 export default function Page() {
-    const [logs, setLogs] = useState([]);
+    const [logs, setLogs] = useState<LogItem[]>([]);
     const route = useRouter();
     useEffect(() => {
         const fetchLogs = async () => {
@@ -80,7 +84,7 @@ export default function Page() {
                             </tr>
                         </thead>
                         <tbody>
-                            {logs.map((user: any) => (
+                            {logs.map((user: LogItem) => (
                                 <tr
                                     key={user.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"

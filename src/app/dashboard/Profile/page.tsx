@@ -34,7 +34,7 @@ export default function Profile() {
   const [newPass, setNewPass] = useState('');
   const [cnPass, setCNPass] = useState('');
 
-  const [oldpassErr, setOldPassErr] = useState<string | null>(null);
+  const [oldpassErr] = useState<string | null>(null);
   const [newpassErr, setNewPassErr] = useState<string | null>(null);
   const route = useRouter();
 
@@ -68,7 +68,7 @@ export default function Profile() {
     };
 
     getData();
-  }, []);
+  }, [route]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission
