@@ -106,7 +106,8 @@ const AdminPage = () => {
             try {
                 navigator.clipboard.writeText(`${email}\n${pass}`);
             }
-            catch (_) {
+            catch (e) {
+                console.error('Clipboard copy error:', e);
                 alert('Something went wrong while copying in clipboard!');
             }
         } else {
