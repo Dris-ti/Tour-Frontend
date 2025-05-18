@@ -1,13 +1,16 @@
 "use client";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+interface YearlyData {
+    year: number;
+    total_amount: number;
+}
+
 const Reports = () => {
     const router = useRouter();
-    const [years, setYears] = useState<any[]>([]);
+    const [years, setYears] = useState<YearlyData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -38,9 +41,9 @@ const Reports = () => {
         };
 
         generateReports();
-    }, []);
+    }, [router]);
 
-    const handleRowClick = (year: string) => {
+    const handleRowClick = (year: number) => {
         router.push(`/Dashboard/Reports/${year}`);
     };
 
@@ -62,7 +65,7 @@ const Reports = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {years.map((year: any) => (
+                            {years.map((year) => (
                                 <tr
                                     key={year.year}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"

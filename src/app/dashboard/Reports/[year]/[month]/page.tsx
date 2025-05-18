@@ -7,9 +7,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export default function page() {
-    const { year, month } = useParams();
-    const [monthlyData, setmonthlyData] = useState<any[]>([]);
+
+interface MonthlyDataItem {
+    id: string | number;
+    year: string;
+    month: number;
+    total_transaction: number;
+}
+
+
+export default function Page() {
+    const { year } = useParams();
+    const [monthlyData, setmonthlyData] = useState<MonthlyDataItem[]>([]);
 
     useEffect(() => {
         async function getMonthyData(year: string) {
@@ -65,16 +74,16 @@ export default function page() {
                             </tr>
                         </thead>
                         <tbody>
-                            {monthlyData.map((year: any) => (
+                            {monthlyData.map((item) => (
                                 <tr
-                                    key={year.id}
+                                    key={item.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                     onClick={() => {
-                                        handleRowClick(year.year);
+                                        handleRowClick(item.year);
                                     }}
                                 >
-                                    <td className="px-6 py-2">{getMonthName(year.month)}</td>
-                                    <td className="px-6 py-2">{year.total_transaction}</td>
+                                    <td className="px-6 py-2">{getMonthName(item.month)}</td>
+                                    <td className="px-6 py-2">{item.total_transaction}</td>
                                 </tr>
                             ))}
                         </tbody>

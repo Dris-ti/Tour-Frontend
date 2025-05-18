@@ -5,16 +5,25 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+interface MonthlyData {
+  year: number;
+  month: number;
+  total_transaction: number;
+}
+
 export default function Page() {
   const { year } = useParams();
-  const [yearlyData, setYearlyData] = useState<any[]>([]);
+  const [yearlyData, setYearlyData] = useState<MonthlyData[]>([]);
   const route = useRouter();
-  const [isLoading, setIsLoading] = useState(true); // Track loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getMonthlyData(year: string) {
       try {
-        const response = await axios.get(`http://localhost:3000/admin-dashboard/allMonthlyTransactionByYear/${year}`, { withCredentials: true });
+        const response = await axios.get(
+          `http://localhost:3000/admin-dashboard/allMonthlyTransactionByYear/${year}`,
+          { withCredentials: true }
+        );
 
         if (response.status === 201) {
           setYearlyData(response.data);
@@ -31,16 +40,16 @@ export default function Page() {
         }
         console.error("Error fetching Monthly information:", error);
       } finally {
-        setIsLoading(false); // Set loading to false when request completes
+        setIsLoading(false);
       }
     }
 
     if (year && typeof year === "string") {
       getMonthlyData(year);
     }
-  }, [year]);
+  }, [year, route]); // <-- add route here
 
-  const handleRowClick = (selectedYear: string) => {
+  const handleRowClick = (selectedYear: number) => {
     console.log("Clicked Year:", selectedYear);
   };
 
@@ -49,10 +58,10 @@ export default function Page() {
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-    return months[monthNumber - 1]; // Since array index starts from 0
+    return months[monthNumber - 1];
   };
 
-  if (!year) return <div>Loading...</div>; // Avoid SSR hydration issues
+  if (!year) return <div>Loading...</div>;
   if (isLoading) return <div>Loading reports...</div>;
 
   return (
@@ -71,7 +80,7 @@ export default function Page() {
               </tr>
             </thead>
             <tbody>
-              {yearlyData.map((data: any) => (
+              {yearlyData.map((data) => (
                 <tr
                   key={`${data.year}-${data.month}`}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"

@@ -58,7 +58,7 @@ export default function LoginPage() {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={(e: any) => setEmail(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     />
 
                     <InputField
@@ -66,7 +66,7 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e: any) => setPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     />
 
                     <button

@@ -1,11 +1,11 @@
 'use client';
 
-import { faCheck, faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
-import useSWR from 'swr';
+import React, { useEffect, useState } from 'react';
+
 
 import '@fontsource/inter';
 import Button from '@mui/joy/Button';
@@ -16,7 +16,7 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import Stack from '@mui/joy/Stack';
 import Input from '@mui/joy/Input';
-import ValidityCheck from '../../ValidityCheck/page'
+
 
 
 const AdminPage = () => {
@@ -52,7 +52,7 @@ const AdminPage = () => {
         };
 
         fetchAdmins();
-    }, [open]);
+    }, [open, route]);
 
 
     const addAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,7 +79,6 @@ const AdminPage = () => {
             setPass('')
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                const { status, data } = error.response;
                 if (axios.isAxiosError(error) && error.response?.status === 401) {
                     route.replace('/Login');
                 } else {

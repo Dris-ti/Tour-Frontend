@@ -1,6 +1,6 @@
 'use client'
 import axios from 'axios';
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -16,12 +16,25 @@ import { useRouter } from 'next/navigation';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
+interface MonthlyData {
+    month: number;  // e.g., 1 for January
+    total_transaction: number;
+}
+
+interface UsersCount {
+    Users: number;
+    Agencies: number;
+    Guides: number;
+}
+
+
+
 export default function Overview() {
     const [profit, setProfit] = useState(0);
     const [pPercentage, setpPercentage] = useState(0);
     const [estimation, setEstimation] = useState(0);
-    const [monthlyData, setmonthlyData] = useState<any[]>([]);
-    const [users, setUsers] = useState<any>(null); // Allow objects
+    const [monthlyData, setmonthlyData] = useState<MonthlyData[]>([]);
+    const [users, setUsers] = useState<UsersCount | null>(null);
     const year = new Date().getFullYear();
     const route = useRouter();
     const [isMountedMonthly, setIsMountedMonthly] = useState(false); // Prevent hydration issue
@@ -58,7 +71,7 @@ export default function Overview() {
         }
 
         getMonthyData(year.toString()); // Convert year to string
-    }, [isMountedMonthly]);
+    }, [isMountedMonthly, route]);
 
 
     useEffect(() => {

@@ -4,9 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import useSWR, { mutate } from 'swr';
+import { mutate } from 'swr';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+interface Guide {
+    id: string;
+    name: string;
+    email: string;
+    status: string;
+}
+
 
 const GuidePage = () => {
     const [status, setStatus] = useState('Pending');
@@ -83,7 +89,7 @@ const GuidePage = () => {
         };
 
         fetchGuides();
-    }, [status]);
+    }, [status, router]);
 
 
 
@@ -139,7 +145,7 @@ const GuidePage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {guides.map((user: any) => (
+                            {guides.map((user: Guide) => (
                                 <tr
                                     key={user.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"

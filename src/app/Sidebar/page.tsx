@@ -1,4 +1,5 @@
 'use client'
+
 import { faArrowRightFromBracket, faChartLine, faPlane, faSquarePollVertical, faUser, faUserTie, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -6,8 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
-
-export default function SideBar(props: any) {
+export default function SideBar() {
     const route = useRouter();
 
     const logout = async () => {
@@ -15,28 +15,14 @@ export default function SideBar(props: any) {
             const response = await axios.post('http://localhost:3000/authentication/logout', {}, { withCredentials: true });
 
             if (response.status === 201) {
-                alert('Log outed successfully!');
-                route.replace('/Login')
+                alert('Logged out successfully!');
+                route.replace('/Login');
             }
 
         } catch (error) {
             alert('An unexpected error occurred. Please try again.\n' + error);
         }
-    }
-
-    const checkValidity = async () => {
-        try {
-            const response = await axios.post('http://localhost:3000/authentication/logout', {}, { withCredentials: true });
-
-            if (response.status != 201) {
-                alert('Login Required!');
-                route.replace('/Login')
-            }
-
-        } catch (error) {
-            alert('An unexpected error occurred. Please try again.\n' + error);
-        }
-    }
+    };
 
     return (
         <div>
@@ -57,7 +43,6 @@ export default function SideBar(props: any) {
                         <FontAwesomeIcon icon={faUserTie} />
                         Admins
                     </Link>
-
                 </li>
                 <li>
                     <Link href='../../Dashboard/Agencies'>
@@ -77,23 +62,19 @@ export default function SideBar(props: any) {
                         Generate Reports
                     </Link>
                 </li>
-
                 <li>
                     <Link href='../../Dashboard/ActivityLog'>
                         <FontAwesomeIcon icon={faChartLine} />
                         Activity Log
                     </Link>
                 </li>
-
                 <li>
-                    <button
-                        onClick={logout}
-                    >
+                    <button onClick={logout}>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />
                         Logout
                     </button>
                 </li>
             </ul>
         </div>
-    )
+    );
 }

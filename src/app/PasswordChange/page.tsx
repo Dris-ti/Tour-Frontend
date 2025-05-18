@@ -1,20 +1,17 @@
 'use client'
 
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { InputField } from '../Login/InputField'
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
     const [cnpassword, setCNPassword] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
     const searchParams = useSearchParams();
 
-
-    const changePassword = async () =>{        
+    const changePassword = async () => {
         if (password !== cnpassword) {
             alert("Passwords do not match.");
             return;
@@ -27,30 +24,32 @@ export default function LoginPage() {
             return;
         }
 
-        try{
-            console.log("TOkEN: " + token)
-            console.log("PAss:"  + password);
-            const response = await axios.post(`http://localhost:3000/authentication/forgetPassword`, {token, newPassword: password}, {withCredentials: true});
+        try {
+            console.log("TOKEN: " + token)
+            console.log("PASS: " + password);
 
-            if(response.status === 201)
-            {
+            const response = await axios.post(`http://localhost:3000/authentication/forgetPassword`,
+                { token, newPassword: password },
+                { withCredentials: true });
+
+            if (response.status === 201) {
                 alert("Password changed successfully.");
                 router.push('../Login');
             }
+        } catch (error) {
+            alert(`Error occurred: ${error}`)
         }
-        catch(error)
-        {
-            alert(`Error occured: ${error}`)
-        }
-        
-    }
 
+    }
 
     return (
         <div className="flex overflow-hidden flex-col font-bold text-black bg-white min-h-screen">
             <div className="flex flex-col justify-center items-center px-16 py-32 w-full bg-teal-300 bg-opacity-20 max-md:px-4 max-md:py-20">
                 <form
-                    onSubmit={(e) => { e.preventDefault(); changePassword(); }}
+                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                        e.preventDefault();
+                        changePassword();
+                    }}
                     className="flex flex-col px-10 pt-8 pb-16 mb-0 bg-white rounded-[25px] shadow-[0px_0px_10px_rgba(89,195,195,1)] w-[500px] max-md:w-full max-md:px-4"
                 >
                     <h1 className="self-center text-6xl text-center text-teal-300 tracking-[8px] max-md:text-4xl">
@@ -62,7 +61,7 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e: any) => setPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     />
 
                     <InputField
@@ -70,7 +69,7 @@ export default function LoginPage() {
                         type="password"
                         id="cnpassword"
                         value={cnpassword}
-                        onChange={(e: any) => setCNPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCNPassword(e.target.value)}
                     />
 
                     <button
@@ -79,7 +78,6 @@ export default function LoginPage() {
                     >
                         Save
                     </button>
-
                 </form>
             </div>
         </div>

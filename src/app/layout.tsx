@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import FontAwesoneConfig from "./icons/FontAwesoneIcon";
 
@@ -27,20 +28,19 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <FontAwesoneConfig />
-        <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        />
+        {/* No more font or CSS links here */}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        {/* Load scripts asynchronously */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          src="https://cdn.jsdelivr.net/npm/apexcharts"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

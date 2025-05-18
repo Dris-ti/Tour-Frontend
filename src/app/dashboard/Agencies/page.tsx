@@ -4,10 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import useSWR, { mutate } from 'swr';
-import ValidityCheck from '../../ValidityCheck/page'
+import { mutate } from 'swr';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+interface Agency {
+    id: string;
+    name: string;
+    email: string;
+    status: string;
+}
+
 
 const AgencyPage = () => {
     // <ValidityCheck />s
@@ -88,7 +94,7 @@ const AgencyPage = () => {
         };
 
         fetchAgencies();
-    }, [status]);
+    }, [status, router]);
 
 
     const handleRowClick = (id: string) => {
@@ -143,7 +149,7 @@ const AgencyPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {agencies.map((user: any) => (
+                            {agencies.map((user: Agency) => (
                                 <tr
                                     key={user.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"

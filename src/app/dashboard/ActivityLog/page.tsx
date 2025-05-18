@@ -1,17 +1,16 @@
 'use client';
 
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@fontsource/inter';
-import { routeModule } from 'next/dist/build/templates/pages';
 import { useRouter } from 'next/navigation';
 
 
 
 
-export default function page() {
+export default function Page() {
     const [logs, setLogs] = useState([]);
     const route = useRouter();
     useEffect(() => {
@@ -39,7 +38,7 @@ export default function page() {
         };
 
         fetchLogs();
-    }, []);
+    }, [route]);
 
 
 

@@ -3,7 +3,7 @@ interface InputFieldProps {
   type: "email" | "password" | "text" | "date" | "file";
   id: string;
   value?: string;
-  onChange: any;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
 }
 

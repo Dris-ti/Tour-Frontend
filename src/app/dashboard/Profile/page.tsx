@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { InputField } from './InputField';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 import '@fontsource/inter';
@@ -14,8 +14,7 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import Stack from '@mui/joy/Stack';
 import Input from '@mui/joy/Input';
-import { profile } from 'console';
-import { Akatab } from 'next/font/google';
+
 
 export default function Profile() {
   const [bio, setBio] = useState<string>("");
@@ -26,7 +25,7 @@ export default function Profile() {
   const [dobDate, setDate] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const [profilePic, setProfilePic] = useState<string>("");
+  const [profilePic] = useState<string>("");
 
   const [isEditing, setIsEditing] = useState(false); // Controls edit mode
 
@@ -192,7 +191,7 @@ export default function Profile() {
                   label="NID Picture"
                   type="file"
                   id="nid_pic_path"
-                  onChange={(e: { target: { files: any[]; }; }) => setNidPicFile(e.target.files?.[0] || null)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNidPicFile(e.target.files?.[0] || null)}
                   disabled={!isEditing}
                 />
                 <InputField label="Gender" type="text" id="gender" value={gender} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setGender(e.target.value)} disabled={!isEditing} />

@@ -1,11 +1,8 @@
 'use client'
 
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { InputField } from '../Login/InputField'
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { Coming_Soon } from 'next/font/google';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -14,42 +11,35 @@ export default function LoginPage() {
         try {
             const response = await axios.post(`http://localhost:3000/authentication/requestChangePassword/${email}`, {},
                 { withCredentials: true });
-    
+
             if (response.status === 201) {
                 alert("An email has been sent to your email address. Please check your email to reset your password.");
-            }
-            else{
-                alert(response.statusText)
+            } else {
+                alert(response.statusText);
             }
         } catch (error) {
             alert("An unexpected error occurred. Please try again." + error);
         }
     };
 
-    const checkEmailValidity = async()=>{
-        try{
-            
-            const response = await axios.get("http://localhost:3000/authentication/GetAccountInfo", {withCredentials: true});
-            if(response.status === 201)
-            {
+    const checkEmailValidity = async () => {
+        try {
+            const response = await axios.get("http://localhost:3000/authentication/GetAccountInfo", { withCredentials: true });
+            if (response.status === 201) {
                 sendMail();
+            } else {
+                alert(response.statusText);
             }
-            else{
-                alert(response.statusText)
-            }
-        }
-        catch(error)
-        {
+        } catch (error) {
             alert(error);
         }
-
-    }
+    };
 
     return (
         <div className="flex overflow-hidden flex-col font-bold text-black bg-white min-h-screen">
             <div className="flex flex-col justify-center items-center px-16 py-32 w-full bg-teal-300 bg-opacity-20 max-md:px-4 max-md:py-20">
                 <form
-                    onSubmit={(e) => { e.preventDefault(); checkEmailValidity(); }}
+                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); checkEmailValidity(); }}
                     className="flex flex-col px-10 pt-8 pb-16 mb-0 bg-white rounded-[25px] shadow-[0px_0px_10px_rgba(89,195,195,1)] w-[500px] max-md:w-full max-md:px-4"
                 >
                     <h1 className="self-center text-6xl text-center text-teal-300 tracking-[8px] max-md:text-4xl">
@@ -61,7 +51,7 @@ export default function LoginPage() {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={(e: any) => setEmail(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     />
 
                     <button
@@ -70,9 +60,8 @@ export default function LoginPage() {
                     >
                         Send Mail
                     </button>
-
                 </form>
             </div>
         </div>
-    )
+    );
 }
